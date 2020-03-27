@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title><%= title %></title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Plataforma de Gestão de frotas</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav navbar-right">
+        <li id="home"><a href="/profile">HOME</a></li>
+        <li onclick="logout()"><a href="/">LOGOUT</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-app.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-database.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+   https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyB7mpzrP7Zw0hy18rSTANSFvD2eHqH2h5M",
+    authDomain: "projeto-5239c.firebaseapp.com",
+    databaseURL: "https://projeto-5239c.firebaseio.com",
+    projectId: "projeto-5239c",
+    storageBucket: "projeto-5239c.appspot.com",
+    messagingSenderId: "186926542206",
+    appId: "1:186926542206:web:3914ead8b8aab1973ad72f"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+
+<body>
+
+  <p class="bemvindo" id="nome_utilizador"></p>
+
+  <script>
+    firebase.auth().onAuthStateChanged(function (user) {
+
+      if (user) {
+        var user = firebase.auth().currentUser;
+
+        if (user != null) {
+          var email = user.email;
+          document.getElementById('nome_utilizador').innerHTML = "Bem-vindo " + email;
+        }
+
+        var email1 = email.replace(".", "-");
+        var viagens = firebase.database().ref('/Utilizadores/' + email1);
+
+        viagens.on('value', function (dados) {
+          for (var x in dados.val().Viagens) {
+            //debugger;
+            console.log(dados.val().Viagens[x].end);
+            document.getElementById('viagens').innerText = dados.val().Viagens[x].start;
+          }
+
+        });
+
+      } else {
+        window.alert("No user logged");
+        window.location = '/';
+      }
+    });
+
+    function logout() {
+      firebase.auth().signOut().then(function () {
+        // Sign-out successful.
+      }).catch(function (error) {
+        // An error happened.
+      });
+    }
+  </script>
+
+  <div class="ultimaLocalizacao">
+    <p id="viagens"></p>
+    <p id="matricula"></p>
+    <p id="morada"></p>
+  </div>
+</body>
+
+</html>
