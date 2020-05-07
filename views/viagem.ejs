@@ -2,122 +2,166 @@
 <html>
 
 <head>
-  <title><%= title %></title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel='stylesheet' href='/stylesheets/style.css' />
-</head>
+    <title></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
 
-<nav class="navbar navbar-default">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">Plataforma de Gestão de frotas</a>
-    </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav navbar-right">
-        <li id="home"><a href="/profile">PROFILE</a></li>
-        <li onclick="logout()"><a href="/">LOGOUT</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-app.js"></script>
 
-<!-- The core Firebase JS SDK is always required and must be listed first -->
-<script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
 
-<script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-database.js"></script>
 
-<script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-database.js"></script>
-
-<!-- TODO: Add SDKs for Firebase products that you want to use
+    <!-- TODO: Add SDKs for Firebase products that you want to use
    https://firebase.google.com/docs/web/setup#available-libraries -->
 
-<script>
-  // Your web app's Firebase configuration
-  var firebaseConfig = {
-    apiKey: "AIzaSyB7mpzrP7Zw0hy18rSTANSFvD2eHqH2h5M",
-    authDomain: "projeto-5239c.firebaseapp.com",
-    databaseURL: "https://projeto-5239c.firebaseio.com",
-    projectId: "projeto-5239c",
-    storageBucket: "projeto-5239c.appspot.com",
-    messagingSenderId: "186926542206",
-    appId: "1:186926542206:web:3914ead8b8aab1973ad72f"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-</script>
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyB7mpzrP7Zw0hy18rSTANSFvD2eHqH2h5M",
+            authDomain: "projeto-5239c.firebaseapp.com",
+            databaseURL: "https://projeto-5239c.firebaseio.com",
+            projectId: "projeto-5239c",
+            storageBucket: "projeto-5239c.appspot.com",
+            messagingSenderId: "186926542206",
+            appId: "1:186926542206:web:3914ead8b8aab1973ad72f"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        var key = "AIzaSyBuN-mL97Jc3sQGT9zRiOtG5qwrOB3NWgI"
+        google.charts.load("current", {
+            "packages": ["map"],
+            // Note: you will need to get a mapsApiKey for your project.
+            // See: https://developers.google.com/chart/interactive/docs/basic_load_libs#load-settings
+            "mapsApiKey": "AIzaSyBuN-mL97Jc3sQGT9zRiOtG5qwrOB3NWgI"
+        });
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Lat', 'Long', 'Name'],
+                [37.4232, -122.0853, 'Work'],
+                [37.4289, -122.1697, 'University'],
+                [37.6153, -122.3900, 'Airport'],
+                [37.4422, -122.1731, 'Shopping']
+            ]);
+
+            var map = new google.visualization.Map(document.getElementById('map_div'));
+            map.draw(data, {
+                showTooltip: true,
+                showInfoWindow: true
+            });
+        }
+
+    </script>
+
+</head>
 
 <body>
 
-  <!--<p class="bemvindo" id="nome_utilizador"></p>-->
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Plataforma de Gestão de frotas</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li id="home"><a href="/profile">PROFILE</a></li>
+                    <li onclick="logout()"><a href="/">LOGOUT</a></li>
+                </ul>
+            </div>
+            <div class="utilizador">
+                <p>Utilizador <p id="utilizador"></p>
+                </p>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-  <script>
+    <h3>Detalhes</h3>
+    <p id="inicio"></p>
+    <p id="fim"></p>
+    <table id="table">
+        <tr>
+            <th>&numsp;</th>
+            <th>Morada</th>
+            <th>Altitude</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+            <th>Precisão</th>
+            <th>Velocidade</th>
+        </tr>
+        <tr>
+            <td id="num"></td>
+            <td id="morada"></td>
+            <td id="altitude"></td>
+            <td id="latitude"></td>
+            <td id="longitude"></td>
+            <td id="precisao"></td>
+            <td id="velocidade"></td>
+        </tr>
+    </table>
+    <div id="map_div" style="width: 400px; height: 300px"></div>
+</body>
+
+<script>
+
+    const viagem_id = '<%= viagem_id %>';
     firebase.auth().onAuthStateChanged(function (user) {
 
-      if (user) {
-        var user = firebase.auth().currentUser;
+        if (user) {
 
-        if (user != null) {
-          var email = user.email;
-          window.alert("Bem-vindo " + email);
-        }
+            var user = firebase.auth().currentUser;
 
-        var email1 = email.replace(".", "-");
-        var Viagens = firebase.database().ref('/Utilizadores/' + email1);
+            var email = user.email;
+            document.getElementById("utilizador").innerHTML = email;
+            var email1 = email.replace(".", "-");
+            var Viagens = firebase.database().ref('/Utilizadores/' + email1);
 
-        Viagens.on('value', function (dados) {
-          var existe = dados.exists();
-          console.log(existe);
-          if (existe == true) {
-            dados.forEach(function (childDados) {
-              childDados.forEach(function (viagens) {
-                var childKey = viagens.key, datainicio = viagens.val().start, datafim = viagens.val().end,
-                di = new Date(datainicio), df = new Date(datafim), c = childDados.numChildren();
-                document.getElementById('inicio').innerHTML += "<p>" + di.toUTCString() + "</p>";
-                document.getElementById('fim').innerHTML += "<p>" + df.toUTCString() + "/p>";
-                console.log(childKey);
-              });
+            Viagens.on('value', function (dados) {
+                dados.forEach(function (childDados) {
+                    var datainicio = childDados.child(viagem_id).val().start,
+                        datafim = childDados.child(viagem_id).val().end,
+                        di = new Date(datainicio),
+                        df = new Date(datafim);
+                    var c = 1;
+                    document.getElementById('inicio').innerHTML += "<p>Início: " + di.toUTCString() + "</p>";
+                    document.getElementById('fim').innerHTML += "<p>Fim: " + df.toUTCString() + "</p>";
+                    childDados.child(viagem_id).child("locais").forEach(function (locais) {
+                        console.log(locais.val());
+                        document.getElementById('num').innerHTML += "<p id='t'>" + c + "</p>";
+                        c++;
+                        document.getElementById('morada').innerHTML += "<p id='t'>" + locais.val().morada + "</p>";
+                        document.getElementById('altitude').innerHTML += "<p id='t'>" + locais.val().altitude + "</p>";
+                        document.getElementById('latitude').innerHTML += "<p id='t'>" + locais.val().latitude + "</p>";
+                        document.getElementById('longitude').innerHTML += "<p id='t'>" + locais.val().longitude + "</p>";
+                        document.getElementById('precisao').innerHTML += "<p id='t'>" + locais.val().precisao + "</p>";
+                        document.getElementById('velocidade').innerHTML += "<p id='t'>" + locais.val().velocidade + "</p>";
+                    });
+                });
             });
-          } else {
-            document.getElementById('mensagem').innerHTML = "Não existem viagens";
-            document.getElementById('table').style.visibility="hidden";
-          }
-        });
-      } else {
-        window.alert("No user logged");
-        window.location = '/';
-      }
+        } else {
+            window.alert("No user logged");
+            window.location = '/';
+        }
     });
 
-  </script>
-
-  <h3>As minhas viagens</h3>
-  <h4 id="mensagem"></h4>
-  <table id="table" style="width: 50%;">
-    <tr>
-      <th>Inicio</th>
-      <th>Fim</th>
-    </tr>
-    <tr>
-      <td id="inicio"></td>
-      <td id="fim"></td>
-    </tr>
-  </table>
-
-  <script>
     function logout() {
-      firebase.auth().signOut().then(function () {
-        // Sign-out successful.
-      }).catch(function (error) {
-        // An error happened.
-      });
+        firebase.auth().signOut().then(function () {
+            // Sign-out successful.
+        }).catch(function (error) {
+            // An error happened.
+        });
     }
-  </script>
-
-</body>
+</script>
 
 </html>

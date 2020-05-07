@@ -9,6 +9,7 @@ require('firebase/database');
 
 var indexRouter = require('./routes/index');
 var profileRouter = require('./routes/profile');
+var viagemRouter = require('./routes/viagem');
 var usersRouter = require('./routes/users');
 
 var app = express();
@@ -23,7 +24,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
+app.use('/viagem', viagemRouter);
 app.use('/profile', profileRouter);
 app.use('/', indexRouter);
 
