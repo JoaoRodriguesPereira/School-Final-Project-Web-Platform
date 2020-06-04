@@ -3,14 +3,13 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var firebase = require('firebase');
-require('firebase/auth');
-require('firebase/database');
 
 var indexRouter = require('./routes/index');
 var profileRouter = require('./routes/profile');
 var viagemRouter = require('./routes/viagem');
-var usersRouter = require('./routes/users');
+var adminRouter = require('./routes/admin');
+var viagensUtilizadorRouter = require('./routes/viagensUtilizador');
+var viagensUtilizadorLocaisRouter = require('./routes/viagensUtilizadorLocais');
 
 var app = express();
 
@@ -26,6 +25,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/viagem', viagemRouter);
 app.use('/profile', profileRouter);
+app.use('/admin', adminRouter);
+app.use('/viagensUtilizador', viagensUtilizadorRouter);
+app.use('/viagensUtilizadorLocais', viagensUtilizadorLocaisRouter);
 app.use('/', indexRouter);
 
 // catch 404 and forward to error handler

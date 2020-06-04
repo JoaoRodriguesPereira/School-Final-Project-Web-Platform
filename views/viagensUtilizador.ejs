@@ -47,7 +47,7 @@
       </div>
       <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav navbar-right">
-          <li id="home"><a href="/profile">PROFILE</a></li>
+          <li id="home"><a href="/admin">PROFILE</a></li>
           <li onclick="logout()"><a href="/">LOGOUT</a></li>
           <div class="utilizador">
             <span>Utilizador:</span>
@@ -58,7 +58,8 @@
     </div>
   </nav>
 
-  <h3>As minhas viagens</h3>
+  <h2 id="viagensUtilizador"></h2>
+  <h3>Viagens</h3>
   <h4 id="mensagem"></h4>
   <table id="table" class="table">
     <tr>
@@ -77,20 +78,21 @@
 </body>
 
 <script>
+
+  const emailRecebido = '<%= emailRecebido %>';
+  document.getElementById("viagensUtilizador").innerHTML = emailRecebido;
   firebase.auth().onAuthStateChanged(function (user) {
-    
+
     if (user) {
 
       var user = firebase.auth().currentUser;
 
       var email = user.email;
       document.getElementById("utilizador").innerHTML = email;
-      alert("Bem-vindo " + email);
 
-      var email1 = email.replace(".", "-");
-      var Viagens = firebase.database().ref('/Utilizadores/' + email1);
-
-      Viagens.on('value', function (dados) {
+      var emailUtilizador = emailRecebido.replace(".", "-");
+      var Viagens = firebase.database().ref('/Utilizadores/' + emailUtilizador);
+      Viagens.once('value', function (dados) {
         var existe = dados.exists();
         if (existe == true) {
           dados.forEach(function (childDados) {
@@ -109,7 +111,7 @@
               } else {
                 document.getElementById('fim').innerHTML += "<p id='t'>" + df.toString() + "</p>";
               }
-              document.getElementById('detalhes').innerHTML += "<p id='t'><a href='/profile/viagem/" + childKey + "'>Ver Detalhes<a/></p>";
+              document.getElementById('detalhes').innerHTML += "<p id='t'><a href='/viagensUtilizador/viagensUtilizadorLocais/" + emailUtilizador + "&" + childKey + "'>Ver Detalhes<a/></p>";
             });
           });
         } else {
