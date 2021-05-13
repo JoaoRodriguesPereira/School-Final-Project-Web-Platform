@@ -1,100 +1,119 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" class="h-100">
 
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= title %></title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel='stylesheet' href='/stylesheets/style.css'/>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <link rel='stylesheet' href='/stylesheets/style.css' />
 
-<!-- The core Firebase JS SDK is always required and must be listed first -->
-<script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-app.js"></script>
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-app.js"></script>
 
-<script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
 
-<!-- TODO: Add SDKs for Firebase products that you want to use
+  <!-- TODO: Add SDKs for Firebase products that you want to use
     https://firebase.google.com/docs/web/setup#available-libraries -->
 
-<script>
-  // Your web app's Firebase configuration
-  var firebaseConfig = {
-    apiKey: "AIzaSyB7mpzrP7Zw0hy18rSTANSFvD2eHqH2h5M",
-    authDomain: "projeto-5239c.firebaseapp.com",
-    databaseURL: "https://projeto-5239c.firebaseio.com",
-    projectId: "projeto-5239c",
-    storageBucket: "projeto-5239c.appspot.com",
-    messagingSenderId: "186926542206",
-    appId: "1:186926542206:web:3914ead8b8aab1973ad72f"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-</script>
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyB7mpzrP7Zw0hy18rSTANSFvD2eHqH2h5M",
+      authDomain: "projeto-5239c.firebaseapp.com",
+      databaseURL: "https://projeto-5239c.firebaseio.com",
+      projectId: "projeto-5239c",
+      storageBucket: "projeto-5239c.appspot.com",
+      messagingSenderId: "186926542206",
+      appId: "1:186926542206:web:3914ead8b8aab1973ad72f"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
 
 </head>
 
-<nav class="navbar navbar-default">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
+<body class="d-flex flex-column h-100">
+
+  <header>
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <a class="navbar-brand" href="#">Plataforma de Monitorização de Veículos</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+        aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
       </button>
-      <a class="navbar-brand" href="#">Plataforma de Gestão de frotas</a>
-    </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav navbar-right">
-        <li id="home"><a href="/">HOME</a></li>
-        <li id="about"><a href="/about">ABOUT US</a></li>
-        <li id="contact"><a href="/contact">CONTACT US</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Página Inicial <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/sobre">Sobre Nós</a>
+          </li>
+        </ul>
+        <a style="color: white;" class="nav-link">Procurar Encomenda</a>
+        <input class="form-control mr-sm-2" type="text" id="Codigo" placeholder="Código" required>
+        <button class="btn btn-outline-success my-2 my-sm-0" onclick="procurarEncomenda()" type="submit"
+          id="procurar">Procurar</button>
+      </div>
+    </nav>
+  </header>
 
-<body>
   <div class="login">
-    <h1>Login Form</h1>
-    <!-- <form action="/index.js" method="POST"> -->
-    <input type="text" id="Email" placeholder="Email" required>
-    <input type="password" id="Password" placeholder="Password" required>
-    <button onclick="login()" type="submit" name="login">Login</button>
+    <h1>Login</h1>
+    <input type="email" id="Email" class="form-control" placeholder="Email" required autofocus>
+    <input type="password" id="Password" class="form-control" placeholder="Password" required>
+    <button class="btn btn-lg btn-primary btn-block" onclick="login()" type="submit" name="login">Login</button>
+    <p class="mt-5 mb-3 text-muted" style="text-align: center;">&copy; 2020</p>
   </div>
-
-  <script>
-
-    firebase.auth().onAuthStateChanged(function (user) {
-
-      if (user) {
-        var user = firebase.auth().currentUser;
-
-        if (user.email != 'admin@admin.com') {
-          window.location = '/profile';
-        } else {
-          window.location = '/admin';
-        }
-      }
-    });
-
-    function login() {
-
-      var userEmail = document.getElementById('Email').value;
-      var userPass = document.getElementById('Password').value;
-
-      firebase.auth().signInWithEmailAndPassword(userEmail, userPass).catch(function (error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-
-        window.alert('Error :' + errorMessage);
-      });
-    }
-  </script>
-
 </body>
+<script>
+
+  firebase.auth().onAuthStateChanged(function (user) {
+
+    if (user) {
+      var user = firebase.auth().currentUser;
+
+      if (user.email != 'admin@admin.com') {
+        window.location = '/profile';
+      } else {
+        window.location = '/admin';
+      }
+    }
+  });
+
+  function login() {
+
+    var userEmail = document.getElementById('Email').value;
+    var userPass = document.getElementById('Password').value;
+
+    firebase.auth().signInWithEmailAndPassword(userEmail, userPass).catch(function (error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+
+      window.alert('Error :' + errorMessage);
+    });
+  }
+
+  function procurarEncomenda() {
+
+    var codigo = document.getElementById('Codigo').value;
+
+    if (codigo == "") {
+      alert("Tem que inserir um codigo!");
+    } else {
+      window.location = '/encomenda/' + codigo;
+    }
+  }
+</script>
 
 <footer>
-  <a href="https://www.estg.ipp.pt"><img src="images/logo_ESTGBRANCO.png" alt="logo_ESTGBRANCO.png" style="float:left; width:250px; height:50px;"></a>
+  <a href="https://www.estg.ipp.pt"><img src="images/logo_ESTGBRANCO.png" alt="logo_ESTGBRANCO.png"
+      style="float:left; width:300px; height:60px;"></a>
 </footer>
 
 </html>

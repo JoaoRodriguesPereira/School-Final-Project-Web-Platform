@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-app.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-database.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+   https://firebase.google.com/docs/web/setup#available-libraries -->
+
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyB7mpzrP7Zw0hy18rSTANSFvD2eHqH2h5M",
+            authDomain: "projeto-5239c.firebaseapp.com",
+            databaseURL: "https://projeto-5239c.firebaseio.com",
+            projectId: "projeto-5239c",
+            storageBucket: "projeto-5239c.appspot.com",
+            messagingSenderId: "186926542206",
+            appId: "1:186926542206:web:3914ead8b8aab1973ad72f"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
+</head>
+
+<body class="d-flex flex-column h-100">
+
+    <header>
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <a class="navbar-brand" href="#">Plataforma de Monitorização de Veículos</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/admin">Página Principal <span class="sr-only">(current)</span></a>
+                    </li>
+                </ul>
+                <span class="nav-link disable" id="utilizador"></span>
+                <button class="btn btn-outline-success my-2 my-sm-0" onclick="logout()">Logout</button>
+            </div>
+        </nav>
+    </header>
+
+    <main role="main" class="flex-shrink-0">
+        <div class="container-fluid">
+            <h3 style="margin-top: 80px;">Utilizadores</h3>
+            <h4 id="mensagem"></h4>
+            <table id="table" class="table table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">&numsp;</th>
+                        <th scope="col">Utilizadores</th>
+                        <th scope="col">Número de Viagens</th>
+                        <th scope="col">Está em viagem?</th>
+                        <th scope="col">Ver Viagens</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row" id="num"></th>
+                        <td id="utilizadores"></td>
+                        <td id="numViagens"></td>
+                        <td id="estaEmViagem"></td>
+                        <td id="viagens"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+
+<script>
+    firebase.auth().onAuthStateChanged(function (user) {
+
+        if (user) {
+
+            var user = firebase.auth().currentUser;
+
+            var email = user.email;
+            var pass = user.password;
+            document.getElementById("utilizador").innerHTML = email;
+
+            var email1 = email.replace(".", "-");
+            var Utilizadores = firebase.database().ref('/Utilizadores/');
+
+            Utilizadores.once('value', function (dados) {
+                var existe = dados.exists();
+                if (existe == true) {
+                    var c = 1, emViagem;
+                    dados.forEach(function (childDados) {
+                        document.getElementById('num').innerHTML += "<p id='t'>" + c + "</p>";
+                        document.getElementById('utilizadores').innerHTML += "<p id='t'>" + childDados.key.replace("-", ".") + "</p>";
+                        childDados.forEach(function (viagens) {
+                            document.getElementById('numViagens').innerHTML += "<p id='t'>" + viagens.numChildren() + "</p>";
+                            viagens.forEach(function (viagem) {
+                                if (viagem.val().end == null) {
+                                    emViagem = true;
+                                } else {
+                                    emViagem = false;
+                                }
+                            });
+                            if (emViagem == true) {
+                                document.getElementById('estaEmViagem').innerHTML += "<p id='t'>Sim</p>";
+                            } else {
+                                document.getElementById('estaEmViagem').innerHTML += "<p id='t'>Não</p>";
+                            }
+                        });
+                        document.getElementById('viagens').innerHTML += "<p id='t'><a href='/admin/utilizadores/viagensUtilizador/" + childDados.key.replace("-", ".") + "'>Ver Viagens<a/></p>";
+                        c++;
+                    });
+                } else {
+                    document.getElementById('mensagem').innerHTML = "Não existem utilizadores com viagens";
+                    document.getElementById('table').style.visibility = "hidden";
+                }
+            });
+        } else {
+            window.alert("No user logged");
+            window.location = '/';
+        }
+    });
+
+    function logout() {
+        firebase.auth().signOut().then(function () {
+            // Sign-out successful.
+        }).catch(function (error) {
+            // An error happened.
+        });
+    }
+</script>
+
+</html>

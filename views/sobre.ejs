@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-app.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+    https://firebase.google.com/docs/web/setup#available-libraries -->
+
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyB7mpzrP7Zw0hy18rSTANSFvD2eHqH2h5M",
+            authDomain: "projeto-5239c.firebaseapp.com",
+            databaseURL: "https://projeto-5239c.firebaseio.com",
+            projectId: "projeto-5239c",
+            storageBucket: "projeto-5239c.appspot.com",
+            messagingSenderId: "186926542206",
+            appId: "1:186926542206:web:3914ead8b8aab1973ad72f"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
+
+</head>
+
+<body class="d-flex flex-column h-100">
+
+    <header>
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <a class="navbar-brand" href="#">Plataforma de Monitorização de Veículos</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/">Página Inicial <span class="sr-only">(current)</span></a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main role="main" class="flex-shrink-0">
+        <div class="container-fluid">
+            <h2 style="margin-top: 80px; text-align: center;">Sobre Nós</h5>
+            <h3 style="padding: 200px;">João Rodrigues Pereira, nasceu a 23 de fevereiro de 1993, em Vila Nova de Famalicão. Está matriculado no 3º ano da Licenciatura de Engenharia Informática, na Escola Superior de Tecnologia e Gestão de Felgueiras. Além disso, trabalha na McDonalds de Felgueiras como gerente de turno.
+                O autor sempre gostou da área das novas tecnologias e ao fazer este projeto interessou-lhe bastante a parte de mobile, tanto que quer entrar nesta área do mercado de trabalho e poder evoluir tanto na parte de Android, como IOS.  
+            </h3>
+        </div>
+    </main>
+</body>
+
+</html>

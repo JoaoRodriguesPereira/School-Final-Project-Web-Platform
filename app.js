@@ -10,6 +10,12 @@ var viagemRouter = require('./routes/viagem');
 var adminRouter = require('./routes/admin');
 var viagensUtilizadorRouter = require('./routes/viagensUtilizador');
 var viagensUtilizadorLocaisRouter = require('./routes/viagensUtilizadorLocais');
+var encomendaRouter = require('./routes/encomenda');
+var sobreRouter = require('./routes/sobre');
+var ultimaLocalizacaoRouter = require('./routes/ultimaLocalizacao');
+var utilizadoresRouter = require('./routes/utilizadores');
+var veiculosRouter = require('./routes/veiculos');
+var encomendasRouter = require('./routes/encomendas');
 
 var app = express();
 
@@ -28,7 +34,12 @@ app.use('/profile', profileRouter);
 app.use('/admin', adminRouter);
 app.use('/viagensUtilizador', viagensUtilizadorRouter);
 app.use('/viagensUtilizadorLocais', viagensUtilizadorLocaisRouter);
+app.use('/encomenda', encomendaRouter);
 app.use('/', indexRouter);
+app.use('/ultimaLocalizacao', ultimaLocalizacaoRouter);
+app.use('/utilizadores', utilizadoresRouter);
+app.use('/veiculos', veiculosRouter);
+app.use('/encomendas', encomendasRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

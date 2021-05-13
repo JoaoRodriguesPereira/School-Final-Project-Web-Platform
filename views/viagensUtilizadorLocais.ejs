@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" class="h-100">
 
 <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link rel='stylesheet' href='/stylesheets/style.css' />
 
     <!-- The core Firebase JS SDK is always required and must be listed first -->
@@ -41,101 +44,75 @@
         integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
         crossorigin=""></script>
 
-    <!--<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-        google.charts.load('current', { 'packages': ['corechart'] });
-        google.charts.setOnLoadCallback(drawChart);
-
-        function drawChart() {
-            const viagem_id = '<%= viagem_id %>';
-            firebase.auth().onAuthStateChanged(function (user) {
-                var user = firebase.auth().currentUser;
-
-                var email = user.email;
-                document.getElementById("utilizador").innerHTML = email;
-                var email1 = email.replace(".", "-");
-                var Viagens = firebase.database().ref('/Utilizadores/' + email1);
-
-                Viagens.once('value', function (dados) {
-                    dados.forEach(function (childDados) {
-                        childDados.child(viagem_id).child("locais").forEach(function (locais) {
-                            var data = google.visualization.arrayToDataTable([
-                                ['Altitude', 'Velocidade'],
-                                [locais.val().altitude, locais.val().velocidade]
-                            ]);
-                        });
-                    });
-                });
-            });
-
-            var options = {
-                title: 'Company Performance',
-                curveType: 'none',
-                legend: { position: 'bottom' }
-            };
-
-            var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-
-            chart.draw(data, options);
-        }
-    </script>-->
-
 </head>
 
-<body>
+<body class="d-flex flex-column h-100">
 
-    <nav class="navbar navbar-default">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">Plataforma de Gestão de frotas</a>
-            </div>
-            <div class="collapse navbar-collapse" id="myNavbar">
-                <ul class="nav navbar-nav navbar-right">
-                    <li id="home"><a href="/admin">PROFILE</a></li>
-                    <li onclick="logout()"><a href="/">LOGOUT</a></li>
-                    <div class="utilizador">
-                        <span>Utilizador:</span>
-                        <span id="utilizador"></span>
-                    </div>
+    <header>
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <a class="navbar-brand" href="#">Plataforma de Monitorização de Veículos</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/admin">Página Principal<span class="sr-only">(current)</span></a>
+                    </li>
                 </ul>
+                <span class="nav-link disable" id="utilizador"></span>
+                <button class="btn btn-outline-success my-2 my-sm-0" onclick="logout()">Logout</button>
             </div>
-        </div>
-    </nav>
+        </nav>
+    </header>
 
-    <h3>Detalhes</h3>
-    <p id="inicio"></p>
-    <p id="fim"></p>
-    <div id="map_div"></div>
-    <table id="table" class="table">
-        <tr>
-            <th>&numsp;</th>
-            <th>Morada</th>
-            <th>Altitude</th>
-            <th>Latitude</th>
-            <th>Longitude</th>
-            <th>Precisão</th>
-            <th>Velocidade</th>
-        </tr>
-        <tr>
-            <td id="num"></td>
-            <td id="morada"></td>
-            <td id="altitude"></td>
-            <td id="latitude"></td>
-            <td id="longitude"></td>
-            <td id="precisao"></td>
-            <td id="velocidade"></td>
-        </tr>
-    </table>
+    <main role="main" class="flex-shrink-0">
+        <div class="container-fluid">
+            <div style="margin-top: 80px;">
+                <elem style="font-weight: bold;">Utilizador: </elem>
+                <elem id="viagensUtilizador"></elem>
+            </div>
+            <h3 style="margin-top: 30px;">Detalhes</h3>
+            <p id="inicio"></p>
+            <p id="fim"></p>
+            <div id="curve_chart" style="width: 1300px; height: 500px; margin-bottom: 10px;"></div>
+            <div id="area_chart" style="margin-bottom: 10px; width: 640px; height: 300px; float: left;"></div>
+            <div id="curve_chart_aceleracao" style="margin-left: 10px; width: 650px; height: 300px; float: left;"></div>
+            <div id="map_div" style="width: 1300px; height: 400px;"></div>
+            <!-- <table id="table" class="table table-bordered">
+                <thead class="thead-light"></thead>
+                <tr>
+                    <th scope="col">&numsp;</th>
+                    <th scope="col">Morada</th>
+                    <th scope="col">Altitude</th>
+                    <th scope="col">Latitude</th>
+                    <th scope="col">Longitude</th>
+                    <th scope="col">Precisão</th>
+                    <th scope="col">Velocidade</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row" id="num"></th>
+                        <td id="morada"></td>
+                        <td id="altitude"></td>
+                        <td id="latitude"></td>
+                        <td id="longitude"></td>
+                        <td id="precisao"></td>
+                        <td id="velocidade"></td>
+                    </tr>
+                </tbody>
+            </table> -->
+        </div>
+    </main>
 </body>
 
 <script>
     const viagem_id = '<%= viagem_id %>';
     const emailRecebido = '<%= email %>';
+    document.getElementById("viagensUtilizador").innerHTML = emailRecebido;
     firebase.auth().onAuthStateChanged(function (user) {
 
         if (user) {
@@ -144,35 +121,44 @@
 
             var email = user.email;
             document.getElementById("utilizador").innerHTML = email;
-            var Viagens = firebase.database().ref('/Utilizadores/' + emailRecebido);
+            var Viagens = firebase.database().ref('/Utilizadores/' + emailRecebido.replace(".", "-"));
 
             var latlngs = [];
+            var velocidademax = [];
             Viagens.once('value', function (dados) {
                 dados.forEach(function (childDados) {
                     var datainicio = childDados.child(viagem_id).val().start,
                         datafim = childDados.child(viagem_id).val().end,
                         di = new Date(datainicio),
                         df = new Date(datafim);
-                    var c = 1;
-                    document.getElementById('inicio').innerHTML += "<p>Início: " + di.toString() + "</p>";
+                    var c = 0;
+                    document.getElementById('inicio').innerHTML += "<b><p>Início: </b>" + di.toString() + "</p>";
                     if (df == "Invalid Date") {
-                        document.getElementById('fim').innerHTML += "<p>Fim: A viagem está a decorrer</p>";
+                        document.getElementById('fim').innerHTML += "<b><p>Fim:</b> A viagem está a decorrer</p>";
                     } else {
-                        document.getElementById('fim').innerHTML += "<p>Fim: " + df.toString() + "</p>";
+                        document.getElementById('fim').innerHTML += "<b><p>Fim: </b>" + df.toString() + "</p>";
                     }
                     childDados.child(viagem_id).child("locais").forEach(function (locais) {
-                        document.getElementById('num').innerHTML += "<p id='t'>" + c + "</p>";
+                        //document.getElementById('num').innerHTML += "<p id='t'>" + c + "</p>";
                         c++;
-                        document.getElementById('morada').innerHTML += "<p id='t'>" + locais.val().morada + "</p>";
+                        /* document.getElementById('morada').innerHTML += "<p id='t'>" + locais.val().morada + "</p>";
                         document.getElementById('altitude').innerHTML += "<p id='t'>" + locais.val().altitude + "</p>";
                         document.getElementById('latitude').innerHTML += "<p id='t'>" + locais.val().latitude + "</p>";
                         document.getElementById('longitude').innerHTML += "<p id='t'>" + locais.val().longitude + "</p>";
                         document.getElementById('precisao').innerHTML += "<p id='t'>" + locais.val().precisao + "</p>";
-                        document.getElementById('velocidade').innerHTML += "<p id='t'>" + locais.val().velocidade + "</p>";
-                        L.marker([locais.val().latitude, locais.val().longitude]).addTo(mymap).bindPopup("<b>Morada:</b><br />" + locais.val().morada).openPopup();
-                        latlngs.push([locais.val().latitude, locais.val().longitude]);
+                        document.getElementById('velocidade').innerHTML += "<p id='t'>" + locais.val().velocidade + "</p>"; */
+                        var tam = childDados.child(viagem_id).child("locais").numChildren();
+                        if (c == 1 || c == tam) {
+                            L.marker([locais.val().latitude, locais.val().longitude]).addTo(mymap).bindPopup("<b>Morada:</b><br />" + locais.val().morada + "<br />ID:" + c).openPopup();
+                        }
+                        if ((locais.val().velocidade * 3.6) >= 90) {
+                            velocidademax.push([locais.val().latitude, locais.val().longitude]);
+                        } else {
+                            latlngs.push([locais.val().latitude, locais.val().longitude]);
+                        }
                     });
                     var polyline = L.polyline(latlngs, { color: 'grey' }).addTo(mymap);
+                    var polylinevelocidademax = L.polyline(velocidademax, { color: 'red' }).addTo(mymap);
                     // zoom the map to the polyline
                     mymap.fitBounds(polyline.getBounds());
                 });
@@ -198,6 +184,160 @@
             // Sign-out successful.
         }).catch(function (error) {
             // An error happened.
+        });
+    }
+</script>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+
+        const viagem_id = '<%= viagem_id %>';
+        const emailRecebido = '<%= email %>';
+
+        var latlngs = [];
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('number', 'Locais');
+        data.addColumn('number', 'Velocidade (km/h)');
+        data.addColumn('number', 'Velocidade fora das localidades');
+        data.addColumn('number', 'Velocidade dentro das localidades');
+
+        var id = 0;
+        firebase.auth().onAuthStateChanged(function (user) {
+            var user = firebase.auth().currentUser;
+
+            var email = user.email;
+            document.getElementById("utilizador").innerHTML = email;
+            var email1 = email.replace(".", "-");
+            var Viagens = firebase.database().ref('Utilizadores/' + emailRecebido.replace(".", "-") + '/Viagens/' + viagem_id + '/locais/');
+
+            Viagens.once('value', function (dados) {
+                dados.forEach(function (childDados) {
+                    var velocidade = childDados.val().velocidade * 3.6;
+                    var data = new Date(childDados.val().data);
+                    var hora = data.getHours();
+                    var minuto = data.getMinutes();
+                    latlngs.push([id++, velocidade, 90, 50]);
+                });
+
+                data.addRows(latlngs);
+                var options = {
+                    title: 'Velocidade por local',
+                    curveType: 'function',
+                    legend: { position: 'bottom' },
+                    backgroundColor: '#f1f8e9'
+                };
+                var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+                chart.draw(data, options);
+            });
+        });
+    }
+</script>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+
+        const viagem_id = '<%= viagem_id %>';
+        const emailRecebido = '<%= email %>';
+
+        var latlngs = [];
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('number', 'Locais');
+        data.addColumn('number', 'Altitude (metros)');
+
+        var id = 0;
+        firebase.auth().onAuthStateChanged(function (user) {
+            var user = firebase.auth().currentUser;
+
+            var email = user.email;
+            document.getElementById("utilizador").innerHTML = email;
+            var email1 = email.replace(".", "-");
+            var Viagens = firebase.database().ref('Utilizadores/' + emailRecebido.replace(".", "-") + '/Viagens/' + viagem_id + '/locais/');
+
+            Viagens.once('value', function (dados) {
+                dados.forEach(function (childDados) {
+                    var altitude = childDados.val().altitude;
+                    var data = new Date(childDados.val().data);
+                    var hora = data.getHours();
+                    var minuto = data.getMinutes();
+                    latlngs.push([id++, altitude]);
+                });
+
+                data.addRows(latlngs);
+                var options = {
+                    title: 'Altitude em cada local',
+                    hAxis: { title: 'Local', titleTextStyle: { color: '#333' } },
+                    vAxis: { minValue: 0 },
+                    backgroundColor: '#f1f8e9'
+                };
+                var chart = new google.visualization.AreaChart(document.getElementById('area_chart'));
+
+                chart.draw(data, options);
+            });
+        });
+    }
+</script>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+
+        const viagem_id = '<%= viagem_id %>';
+        const emailRecebido = '<%= email %>';
+
+        var latlngs = [];
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('number', 'Locais');
+        data.addColumn('number', 'Aceleração (m/s)');
+
+        var id = 0;
+        firebase.auth().onAuthStateChanged(function (user) {
+            var user = firebase.auth().currentUser;
+
+            var email = user.email;
+            document.getElementById("utilizador").innerHTML = email;
+            var email1 = email.replace(".", "-");
+            var Viagens = firebase.database().ref('Utilizadores/' + emailRecebido.replace(".", "-") + '/Viagens/' + viagem_id + '/locais/');
+            var c = 0 , velocidade0;
+            Viagens.once('value', function (dados) {
+                dados.forEach(function (childDados) {
+                    if (c == 0) {
+                        velocidade0 = (childDados.val().velocidade).toFixed(2);
+                        c++;
+                    } else {
+                        var velocidade1 = (childDados.val().velocidade).toFixed(2);
+                        c = 0;
+                        var vel = velocidade1 - velocidade0;
+                        var aceleracao = vel / 5;
+                    }
+                    latlngs.push([id++, aceleracao]);
+                });
+
+                data.addRows(latlngs);
+                var options = {
+                    title: 'Aceleração em cada local',
+                    curveType: 'function',
+                    legend: { position: 'bottom' },
+                    backgroundColor: '#f1f8e9'
+                };
+                var chart = new google.visualization.LineChart(document.getElementById('curve_chart_aceleracao'));
+
+                chart.draw(data, options);
+            });
         });
     }
 </script>
